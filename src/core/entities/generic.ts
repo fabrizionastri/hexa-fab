@@ -5,4 +5,5 @@ export type Store<T> = {
   getAll: () => Promise<T[] | undefined>
   post: (entity: T) => Promise<T | undefined>
   delete: (id: ID) => Promise<void>
+  put: (entity: T) => Promise<T | undefined>
 }

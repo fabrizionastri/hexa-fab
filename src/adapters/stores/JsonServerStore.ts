@@ -26,6 +26,7 @@ const $axios = {
   get: handleRequest('get'),
   post: handleRequest('post'),
   delete: handleRequest('delete'),
+  put: handleRequest('put'),
 }
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
@@ -41,6 +42,9 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     },
     delete: async (id: ID): Promise<void> => {
       return await $axios.delete<void>(`/${resource}/${id}`)
+    },
+    put: async (entity: T): Promise<T | undefined> => {
+      return await $axios.put<T>(`/${resource}/${entity.id}`, entity)
     },
   }
 }
