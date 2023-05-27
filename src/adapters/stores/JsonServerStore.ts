@@ -1,6 +1,5 @@
 import axios, { AxiosResponse, Method } from 'axios'
 import { ID, Store } from '../../core/entities/generic'
-import { Order, OrderStore } from '../../core/entities/order'
 
 const $axios = axios.create({
   baseURL: 'http://localhost:3000/',
@@ -10,6 +9,7 @@ const $axios = axios.create({
 interface AxiosRequestConfigCustom {
   url: string
   method: Method
+  entity?: any
 }
 
 const handleAxiosRequest =
@@ -20,9 +20,9 @@ const handleAxiosRequest =
     httpMethod: Method,
     defaultValue: T
   ) =>
-  async (url: string): Promise<T> => {
+  async (url: string, entity?: any): Promise<T> => {
     try {
-      const response = await axiosMethod({ url, method: httpMethod })
+      const response = await axiosMethod({ url, method: httpMethod, entity })
       return response.data
     } catch (error) {
       // console.error(error)
@@ -33,31 +33,20 @@ const handleAxiosRequest =
 const $get = <T>(defaultValue: T) =>
   handleAxiosRequest<T>($axios.request, 'get', defaultValue)
 
-// export const JsonServerOrderStore: OrderStore = {
-//   get: async (id: ID): Promise<Order | undefined> => {
-//     return $get<Order | undefined>(undefined)(`/orders/${id}`)
-//   },
-
-//   getAll: async (): Promise<Order[]> => {
-//     return $get<Order[]>([])(`/orders/`)
-//   },
-// }
+const $post = <T>(defaultValue: T) =>
+  handleAxiosRequest<T>($axios.request, 'post', defaultValue)
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
   return {
     get: async (id: ID): Promise<T | undefined> => {
       return $get<T | undefined>(undefined)(`/${resource}/${id}`)
     },
-
     getAll: async (): Promise<T[]> => {
       return $get<T[]>([])(`/${resource}`)
     },
+    post: async (entity: T): Promise<boolean> => {
+      const response = await $post<boolean>(false)(`/${resource}`, entity)
+      return response
+    },
   }
 }
-
-// const $post = <T>(defaultValue: T) =>
-//   handleAxiosRequest<T>($axios.request, 'post', defaultValue)
-
-// post: async (entity: T): Promise<boolean> => {
-//   return $post<T | undefined>(undefined)(`/${resource}`)
-// },
