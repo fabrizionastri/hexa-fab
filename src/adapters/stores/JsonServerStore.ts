@@ -31,7 +31,7 @@ const $axios = {
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
   return {
-    get: async (id: ID): Promise<T | undefined> => {
+    get: async (id: string): Promise<T | undefined> => {
       return $axios.get<T>(`/${resource}/${id}`)
     },
     getAll: async (): Promise<T[] | undefined> => {
@@ -40,7 +40,7 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     post: async (entity: T): Promise<T | undefined> => {
       return await $axios.post<T>(`/${resource}`, entity)
     },
-    delete: async (id: ID): Promise<void> => {
+    delete: async (id: string): Promise<void> => {
       return await $axios.delete<void>(`/${resource}/${id}`)
     },
     put: async (entity: T): Promise<T | undefined> => {

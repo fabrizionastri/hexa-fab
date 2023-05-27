@@ -1,6 +1,6 @@
 import { ID } from './generic'
 
 export type Order = {
-  id: ID
+  id?: ID
   name: string
 }
