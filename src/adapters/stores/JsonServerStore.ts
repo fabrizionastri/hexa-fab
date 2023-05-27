@@ -44,8 +44,8 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     getAll: async (): Promise<T[]> => {
       return $get<T[]>([])(`/${resource}`)
     },
-    post: async (entity: T): Promise<boolean> => {
-      const response = await $post<boolean>(false)(`/${resource}`, entity)
+    post: async (entity: T): Promise<string> => {
+      const response = await $post<string>('')(`/${resource}`, entity)
       return response
     },
   }
