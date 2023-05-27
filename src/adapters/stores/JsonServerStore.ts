@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, Method } from 'axios'
 import { ID, Store } from '../../core/entities/generic'
 
-const $axios = axios.create({
+const myAxios = axios.create({
   baseURL: 'http://localhost:3000/',
   timeout: 1000,
 })
@@ -9,10 +9,10 @@ const $axios = axios.create({
 interface AxiosRequestConfigCustom {
   url: string
   method: Method
-  entity?: any
+  data?: any
 }
 
-const handleAxiosRequest =
+const $axios =
   <T>(
     axiosMethod: (
       config: AxiosRequestConfigCustom
@@ -20,9 +20,9 @@ const handleAxiosRequest =
     httpMethod: Method,
     defaultValue: T
   ) =>
-  async (url: string, entity?: any): Promise<T> => {
+  async (url: string, data?: any): Promise<T> => {
     try {
-      const response = await axiosMethod({ url, method: httpMethod, entity })
+      const response = await axiosMethod({ url, method: httpMethod, data })
       return response.data
     } catch (error) {
       // console.error(error)
@@ -31,10 +31,13 @@ const handleAxiosRequest =
   }
 
 const $get = <T>(defaultValue: T) =>
-  handleAxiosRequest<T>($axios.request, 'get', defaultValue)
+  $axios<T>(myAxios.request, 'get', defaultValue)
 
 const $post = <T>(defaultValue: T) =>
-  handleAxiosRequest<T>($axios.request, 'post', defaultValue)
+  $axios<T>(myAxios.request, 'post', defaultValue)
+
+const $delete = <T>(defaultValue: T) =>
+  $axios<T>(myAxios.request, 'delete', defaultValue)
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
   return {
@@ -47,6 +50,9 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     post: async (entity: T): Promise<string> => {
       const response = await $post<string>('')(`/${resource}`, entity)
       return response
+    },
+    delete: async (id: ID): Promise<void> => {
+      return await $delete<void>(undefined)(`/${resource}/${id}`)
     },
   }
 }
