@@ -1,8 +1,6 @@
-import { ID } from './generic'
-
 export type OrderItem = {
-  id?: ID
-  orderId: ID
+  id?: string
+  orderId: string
   name: string
   quantity: number
   price: number
