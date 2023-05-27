@@ -1,18 +1,6 @@
 import { ordersMock } from '../../../mock/db'
 import { Order } from '../../core/entities/order'
-import { JsonServerOrderStore, JsonServerStore } from './JsonServerStore'
-
-describe('JsonServerOrderStore', () => {
-  it('should return Order for get', async () => {
-    const order: Order | undefined = await JsonServerOrderStore.get('order1')
-    expect(order).toEqual(ordersMock[0])
-  })
-
-  it('should return Order[] for getAll', async () => {
-    const orders: Order[] = await JsonServerOrderStore.getAll()
-    expect(orders).toEqual(ordersMock)
-  })
-})
+import { JsonServerStore } from './JsonServerStore'
 
 describe('JsonServerStore with Order', () => {
   const orderStore = JsonServerStore<Order>()

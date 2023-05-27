@@ -34,16 +34,6 @@ const handleAxiosRequest =
 const $get = <T>(defaultValue: T) =>
   handleAxiosRequest<T>($axios.request, 'get', defaultValue)
 
-export const JsonServerOrderStore: OrderStore = {
-  get: async (id: ID): Promise<Order | undefined> => {
-    return $get<Order | undefined>(undefined)(`/${id}`)
-  },
-
-  getAll: async (): Promise<Order[]> => {
-    return $get<Order[]>([])(`/`)
-  },
-}
-
 export const JsonServerStore = <T>(): Store<T> => {
   return {
     get: async (id: ID): Promise<T | undefined> => {
