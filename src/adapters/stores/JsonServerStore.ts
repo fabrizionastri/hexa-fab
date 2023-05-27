@@ -6,53 +6,41 @@ const myAxios = axios.create({
   timeout: 1000,
 })
 
-interface AxiosRequestConfigCustom {
-  url: string
-  method: Method
-  data?: any
-}
-
-const $axios =
-  <T>(
-    axiosMethod: (
-      config: AxiosRequestConfigCustom
-    ) => Promise<AxiosResponse<any>>,
-    httpMethod: Method,
-    defaultValue: T
-  ) =>
-  async (url: string, data?: any): Promise<T> => {
+const handleRequest =
+  (httpMethod: Method) =>
+  async <T>(url: string, data?: any): Promise<T | undefined> => {
     try {
-      const response = await axiosMethod({ url, method: httpMethod, data })
+      const response: AxiosResponse = await myAxios.request({
+        url,
+        method: httpMethod,
+        data,
+      })
       return response.data
     } catch (error) {
       // console.error(error)
-      return defaultValue
+      return undefined
     }
   }
 
-const $get = <T>(defaultValue: T) =>
-  $axios<T>(myAxios.request, 'get', defaultValue)
-
-const $post = <T>(defaultValue: T) =>
-  $axios<T>(myAxios.request, 'post', defaultValue)
-
-const $delete = <T>(defaultValue: T) =>
-  $axios<T>(myAxios.request, 'delete', defaultValue)
+const $axios = {
+  get: handleRequest('get'),
+  post: handleRequest('post'),
+  delete: handleRequest('delete'),
+}
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
   return {
     get: async (id: ID): Promise<T | undefined> => {
-      return $get<T | undefined>(undefined)(`/${resource}/${id}`)
+      return $axios.get<T>(`/${resource}/${id}`)
     },
-    getAll: async (): Promise<T[]> => {
-      return $get<T[]>([])(`/${resource}`)
+    getAll: async (): Promise<T[] | undefined> => {
+      return $axios.get<T[]>(`/${resource}`)
     },
-    post: async (entity: T): Promise<string> => {
-      const response = await $post<string>('')(`/${resource}`, entity)
-      return response
+    post: async (entity: T): Promise<T | undefined> => {
+      return await $axios.post<T>(`/${resource}`, entity)
     },
     delete: async (id: ID): Promise<void> => {
-      return await $delete<void>(undefined)(`/${resource}/${id}`)
+      return await $axios.delete<void>(`/${resource}/${id}`)
     },
   }
 }
