@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Node",
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
+    "types": ["vitest/importMeta", "vitest/globals"]
+    // "baseUrl": "."
+    // "paths": {
+    //   "~/*": ["./*"],
+    //   "@/*": ["./src/*"],
+    //   "~/src/core/entities/*": ["./src/core/entities/*", "./src/core/entities"],
+    //   "usecases/*": ["./src/core/usecases/*", "./src/core/usecases"],
+    //   "gateways/*": ["./src/core/gateways/*", "./src/core/gateways"],
+    //   "adapters/*": ["./src/adapters/*", "./src/adapters"],
+    //   "utils/*": ["./src/utils/*", "./src/utils"],
+    //   "mock/*": ["./mock/*", "./mock"]
+    // }
+  },
+  // "include": ["src/**/*", "mock/**/*"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "flexup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .ts --ignore-path .gitignore --fix .",
+    "format": "prettier --write .",
+    "test": "vitest --reporter verbose",
+    "test:cov": "vitest --coverage",
+    "dev": "nodemon",
+    "db": " json-server --watch C:/Users/fabri/Repos/clean-architecture/hexa-fab/mock/json/db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "volta": {
+    "node": "18.12.1"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.2.1",
+    "vite-tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "@vitest/coverage-c8": "^0.29.8",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.7",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.5.2",
+    "typescript": "^4.9.5",
+    "vite": "^4.2.0",
+    "vitest": "^0.29.8"
+  }
+}
