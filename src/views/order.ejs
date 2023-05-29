@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Order Details</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Order summary</h1>
+  <ol>
+    <li>Order ID: <%= order.id %>
+    </li>
+    <li>Order name: <%= order.name %>
+    </li>
+    <li>Order item: <%= order.orderItems %>
+  </ol>
+
+  <h2>Order Items</h2>
+  <ol>
+    <% order.orderItems.forEach(function(item) { %>
+      <li>
+        <%= item %>
+      </li>
+      <% }); %>
+  </ol>
+
+</body>
+
+</html>

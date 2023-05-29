@@ -1,6 +1,6 @@
-import { ordersMock } from '../../../mock/db'
-import { Order } from '../../core/entities/order'
-import { JsonServerStore } from './JsonServerStore'
+import { ordersMock } from '../../../../mock/db'
+import { Order } from '../../../core/entities/order'
+import { JsonServerStore } from './jsonServerStore'
 
 describe('JsonServerStore', () => {
   describe('orders', () => {
@@ -8,11 +8,11 @@ describe('JsonServerStore', () => {
 
     describe('get', () => {
       it('valid order for valid id', async () => {
-        const order: Order | undefined = await orderStore.get('order1')
+        const order: Order | undefined = await orderStore.getById('order1')
         expect(order).toEqual(ordersMock[0])
       })
       it('undefined for inexistant id', async () => {
-        const order: Order | undefined = await orderStore.get('inexistant')
+        const order: Order | undefined = await orderStore.getById('inexistant')
         expect(order).toEqual(undefined)
       })
     })
@@ -42,13 +42,13 @@ describe('JsonServerStore', () => {
         newOrder.id = result?.id
         expect(result).toBeDefined()
         expect(result).toEqual(newOrder)
-        await orderStore.delete(result?.id)
+        await orderStore.deleteById(result?.id)
       })
     })
 
     describe('delete', () => {
       it('{} when deleting an order', async () => {
-        const result = await orderStore.delete('Order2')
+        const result = await orderStore.deleteById('Order2')
         expect(result).toEqual({})
       })
     })

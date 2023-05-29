@@ -5,3 +5,6 @@ coverage
 # Ignore all HTML files:
 *.html
 .nuxt
+
+# ignore all files that start with .
+.*

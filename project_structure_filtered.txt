@@ -1,0 +1,118 @@
+--- Folder Structure ---
+project_structure_filter.ts
+[src]
+    ├── [adapters]
+        ├── [controllers]
+        ├── [stores]
+            └── [jsonServer]
+                ├── jsonServerStore.spec.ts
+                └── jsonServerStore.ts
+        └── [vues]
+            └── [ejs]
+    ├── [config]
+    ├── [core]
+        ├── [entities]
+            ├── generic.ts
+            ├── order.ts
+            └── orderItem.ts
+        └── [usecases]
+    └── server.ts
+--- File Contents ---
+--- File: src\core\entities\order.ts ---
+import { OrderItem } from './orderItem'
+export type Order = {
+  name: string
+  OrderItems: OrderItem[]
+  principal?: number
+  withoutTaxAmount?: number
+  withTaxAmount?: number
+  taxAmount?: number
+}
+export const withoutTaxAmount = (items: OrderItem[]): number => {
+  return items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+}
+export const withTaxAmount = (items: OrderItem[]): number => {
+  return items.reduce(
+    (acc, item) => acc + item.price * item.quantity * (1 + item.tax),
+    0
+  )
+}
+export const taxAmount = (items: OrderItem[]): number => {
+  return items.reduce(
+    (acc, item) => acc + item.price * item.quantity * item.tax,
+    0
+  )
+}
+export const calculateOrder = (order: Order): Order => {
+  return {
+    ...order,
+    principal: withoutTaxAmount(order.OrderItems),
+    withoutTaxAmount: withoutTaxAmount(order.OrderItems),
+    withTaxAmount: withTaxAmount(order.OrderItems),
+    taxAmount: taxAmount(order.OrderItems),
+  }
+}
+--- File: src\core\entities\orderItem.ts ---
+export type OrderItem = {
+  name: string
+  unit: string
+  quantity: number
+  price: number
+  tax: number
+  withoutTaxAmount?: number
+  withTaxAmount?: number
+  taxAmount?: number
+}
+export const withoutTaxAmount = (item: OrderItem): number => {
+  return item.price * item.quantity
+}
+export const withTaxAmount = (item: OrderItem): number => {
+  return item.price * item.quantity * (1 + item.tax)
+}
+export const taxAmount = (item: OrderItem): number => {
+  return item.price * item.quantity * item.tax
+}
+export const calculateOrderItems = (item: OrderItem): OrderItem => {
+  return {
+    ...item,
+    withoutTaxAmount: withoutTaxAmount(item),
+    withTaxAmount: withTaxAmount(item),
+    taxAmount: taxAmount(item),
+  }
+}
+--- File: src\server.ts ---
+// IMPORT MODULES
+import path from 'path'
+import express, { Express, Request, Response } from 'express'
+import { Order, calculateOrder } from './core/entities/order'
+import { JsonServerStore } from './adapters/stores/jsonServer/jsonServerStore'
+import expressEjsLayouts from 'express-ejs-layouts'
+// SERVER SET UP
+const expressPort = 3001
+const expressUrl = `http://localhost:${expressPort}`
+const app: Express = express()
+app.set('view engine', 'ejs') // sets the default engine for EJS files, meaning that you can use res.render('fileName') instead of res.render('fileName', {extension: 'ejs'}).
+app.use(expressEjsLayouts) // use express-ejs-layouts as the layout engine
+app.set('views', path.join(__dirname, '/views')) // set the default folder for ejs files. use the path.join to merge the path of the current direct(__dirname property) and 'views' folder into an absolute path
+app.use(express.urlencoded({ extended: true })) // To parse incoming URL-encoded requests (form data in POST request body). Important : if you do not do this, you won't be able to get data from a POST request body
+app.use(express.json()) // To parse incoming JSON requests. Important : if you do not do this, you won't be able to get data from a POST request body
+// DATABASE SET UP
+const orderStore = JsonServerStore<Order>('orders')
+app.get('/', (_req: Request, res: Response) => {
+  res.send(`⚡️Server is running at ${expressUrl}`)
+})
+app.get('/order', async (_req: Request, res: Response) => {
+  const orders = await orderStore.getAll()
+  res.send(JSON.stringify(orders))
+  // res.send('⚡️orders')
+})
+app.get('/order/view/:id', async (req, res) => {
+  let order = await orderStore.get(req.params.id)
+  if (!order) res.send('Order not found')
+  order = calculateOrder(order!)
+  res.render('order', { order })
+})
+// SERVER LISTENING
+app.listen(expressPort, () => {
+  console.log(`⚡️Server is running at ${expressUrl}`)
+})

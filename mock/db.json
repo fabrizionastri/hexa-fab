@@ -2,14 +2,18 @@
   "orders": [
     {
       "id": "order1",
-      "name": "21 T-shirts"
+      "name": "21 T-shirts (bleus + rouges)",
+      "orderItems": [
+        "orderItem1",
+        "orderItem2"
+      ]
     },
     {
-      "id": "set879",
+      "id": "order2",
       "name": "Chaussettes"
     },
     {
-      "id": "jkl789",
+      "id": "order3",
       "name": "Chaussures"
     }
   ],
@@ -19,7 +23,9 @@
       "orderId": "order1",
       "name": "T-shirt",
       "quantity": 21,
-      "price": 10
+      "price": 10,
+      "tax": 0.2,
+      "unit": "kg"
     }
   ]
 }

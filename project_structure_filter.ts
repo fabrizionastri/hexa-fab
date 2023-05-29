@@ -8,7 +8,7 @@ const filterPatterns = fs
 
 console.log('filterPatterns:', filterPatterns)
 
-// checks if the file patch contains any of the filter patterns
+// checks if the file path contains any of the filter patterns
 function containsFilter(filePath: string): boolean {
   return filterPatterns.some((filter) => filePath.includes(filter))
 }
@@ -19,21 +19,16 @@ let keepThisSection = true
 
 input.on('data', (chunk) => {
   const lines = chunk.toString().split('\n')
+  console.log('lines:', lines)
 
   const filteredLines = lines.filter((line) => {
-    // Check if this line starts a file section
     if (line.startsWith('--- File: ')) {
       const filePath = line.slice('--- File: '.length).trim()
       console.log('filePath:', filePath)
       keepThisSection = containsFilter(filePath)
       console.log('keepThisSection:', keepThisSection)
     }
-    // If we're in an section that matches the filter, then add this line to the
-    if (keepThisSection) {
-      return line
-    } else {
-      return false
-    }
+    return keepThisSection ? line : false
   })
 
   output.write(filteredLines.join('\n'))

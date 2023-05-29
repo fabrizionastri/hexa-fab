@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, Method } from 'axios'
-import { Store } from '../../core/entities/generic'
+import { Store } from '../../../core/entities/generic'
 
 const myAxios = axios.create({
   baseURL: 'http://localhost:3000/',
@@ -31,7 +31,7 @@ const $axios = {
 
 export const JsonServerStore = <T>(resource: string): Store<T> => {
   return {
-    get: async (id: string): Promise<T | undefined> => {
+    getById: async (id: string): Promise<T | undefined> => {
       return $axios.get<T>(`/${resource}/${id}`)
     },
     getAll: async (): Promise<T[] | undefined> => {
@@ -40,11 +40,11 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     post: async (entity: T): Promise<T | undefined> => {
       return await $axios.post<T>(`/${resource}`, entity)
     },
-    delete: async (id: string): Promise<void> => {
+    deleteById: async (id: string): Promise<void> => {
       return await $axios.delete<void>(`/${resource}/${id}`)
     },
-    put: async (entity: T): Promise<T | undefined> => {
-      return await $axios.put<T>(`/${resource}/${entity.id}`, entity)
+    create: async (entity: T): Promise<T | undefined> => {
+      return await $axios.put<T>(`/${resource}/${entity}`, entity)
     },
   }
 }
