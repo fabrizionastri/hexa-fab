@@ -28,6 +28,7 @@
     "express-ejs-layouts": "^2.5.1",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.1",
+    "nanoid": "^4.0.2",
     "vite-tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {

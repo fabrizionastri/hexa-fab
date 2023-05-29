@@ -50,6 +50,11 @@ app.get('/order/:id', async (req, res) => {
 
 // SERVER LISTENING
 
+// catch all errors and other routes
+app.use((_req: Request, res: Response) => {
+  res.status(404).send('Page not found')
+})
+
 app.listen(expressPort, () => {
   console.log(`⚡️Server is running at ${expressUrl}`)
 })

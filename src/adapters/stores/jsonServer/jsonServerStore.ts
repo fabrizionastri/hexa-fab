@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, Method } from 'axios'
-import { Store } from '../../../core/entities/generic'
+import { Store } from '../../../core/gateways/store.gateway'
+import { Entity } from '../../../core/entities/store'
 
 const myAxios = axios.create({
   baseURL: 'http://localhost:3000/',
@@ -29,7 +30,9 @@ const $axios = {
   put: handleRequest('put'),
 }
 
-export const JsonServerStore = <T>(resource: string): Store<T> => {
+export const JsonServerStore = <T extends Entity>(
+  resource: string
+): Store<T> => {
   return {
     getById: async (id: string): Promise<T | undefined> => {
       return $axios.get<T>(`/${resource}/${id}`)
@@ -37,14 +40,21 @@ export const JsonServerStore = <T>(resource: string): Store<T> => {
     getAll: async (): Promise<T[] | undefined> => {
       return $axios.get<T[]>(`/${resource}`)
     },
-    post: async (entity: T): Promise<T | undefined> => {
+    create: async (entity: T): Promise<T | undefined> => {
       return await $axios.post<T>(`/${resource}`, entity)
     },
-    deleteById: async (id: string): Promise<void> => {
-      return await $axios.delete<void>(`/${resource}/${id}`)
+    deleteById: async (id: string): Promise<T | undefined> => {
+      return await $axios.delete<T>(`/${resource}/${id}`)
     },
-    create: async (entity: T): Promise<T | undefined> => {
-      return await $axios.put<T>(`/${resource}/${entity}`, entity)
+    update: async (partialEntity: Partial<T>): Promise<T | undefined> => {
+      if (!('id' in partialEntity)) return undefined
+      const id = partialEntity.id
+      const existingEntity = await $axios.get<T>(`/${resource}/${id}`)
+      const updatedEntity = Object.assign({
+        ...existingEntity,
+        ...partialEntity,
+      })
+      return await $axios.put<T>(`/${resource}/${id}`, updatedEntity)
     },
   }
 }

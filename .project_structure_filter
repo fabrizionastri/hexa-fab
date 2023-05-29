@@ -1,2 +1,4 @@
-server.ts
+getByProperty
+store
 order
+orderItem

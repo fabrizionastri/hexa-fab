@@ -1,21 +1,14 @@
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
-import { resetJsonDB } from '../../../../mock/resetJsonDB'
-import { JsonServerStore } from './jsonServerStore'
+import { InMemoryStore } from './inMemoryStore'
 
 const orders = mockStore.orders
 const order4: Order = { id: 'order4', name: 'Bonnet', principal: 10 }
 const order5: Order = { id: '', name: 'Manteau' }
 
-resetJsonDB()
-
-describe('JsonServerStore', () => {
-  beforeAll(() => {
-    resetJsonDB()
-  })
-
+describe('InMemoryStore', () => {
   describe('orders', () => {
-    const orderStore = JsonServerStore<Order>('orders')
+    const orderStore = InMemoryStore<Order>('orders')
 
     describe('get', () => {
       it('return order for valid id', async () => {
@@ -39,6 +32,7 @@ describe('JsonServerStore', () => {
       it('return order with same ID when posting order with ID', async () => {
         const result = await orderStore.create(order4)
         console.log('order4:', result)
+        expect(result).toBeDefined()
         expect(result).toEqual(order4)
       })
 

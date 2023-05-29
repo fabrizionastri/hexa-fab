@@ -26,4 +26,6 @@ dist-ssr
 .env
 
 .project_structure_ignore
+.project_structure_filter
+project_structure_filter.txt
 project_structure.txt
