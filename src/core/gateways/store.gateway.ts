@@ -1,3 +1,6 @@
+import { JsonServerStore } from '../../adapters/stores/jsonServer/jsonServerStore'
+import { Order } from '../entities/order'
+import { OrderItem } from '../entities/orderItem'
 import { Entity } from '../entities/store'
 
 export type Store<T extends Entity> = {
@@ -7,3 +10,6 @@ export type Store<T extends Entity> = {
   deleteById: (id: string) => Promise<T | undefined> // return undefined if ID not found or if server error
   update: (partialEntity: Partial<T>) => Promise<T | undefined> // return undefined if ID not found or server error
 }
+
+export const orderStore = JsonServerStore<Order>('orders')
+export const orderItemStore = JsonServerStore<OrderItem>('orderItems')

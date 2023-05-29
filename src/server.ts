@@ -1,9 +1,11 @@
 // IMPORT MODULES
 
 import express, { Express, Request, Response } from 'express'
-import { Order } from './core/entities/order'
-import { JsonServerStore } from './adapters/stores/jsonServer/jsonServerStore'
+
+import { orderStore } from './core/gateways/store.gateway'
 import expressEjsLayouts from 'express-ejs-layouts'
+
+import { calculateOrder } from './core/usecases/calculateOrder'
 
 // SERVER SET UP
 
@@ -22,35 +24,28 @@ app.use(express.json()) // To parse incoming JSON requests. Important : if you d
 
 // DATABASE SET UP
 
-const orderStore = JsonServerStore<Order>('orders')
-
 app.get('/', (_req: Request, res: Response) => {
   res.send(`⚡️Server is running at ${expressUrl}`)
 })
 
 app.get('/order', async (_req: Request, res: Response) => {
   const orders = await orderStore.getAll()
-  res.send(JSON.stringify(orders))
-  // res.send('⚡️orders')
+  // res.send(JSON.stringify(orders))
+  res.render('order-all', { orders })
 })
 
 app.get('/order/:id', async (req, res) => {
-  const order = await orderStore.getById(req.params.id)
-  if (!order) res.send('Order not found')
-  // order = calculateOrder(order!)
-  res.render('order', { order })
+  const id = req.params.id
+  let order = await orderStore.getById(id)
+  if (order) {
+    order = await calculateOrder(order)
+    res.render('order-detail', { order })
+  }
+  res.send('Order not found')
 })
-
-// app.get('/order/:id', async (req, res) => {
-//   let order = await orderStore.getById(req.params.id)
-//   if (!order) res.send('Order not found')
-//   // order = calculateOrder(order!)
-//   res.render('order', { order })
-// })
 
 // SERVER LISTENING
 
-// catch all errors and other routes
 app.use((_req: Request, res: Response) => {
   res.status(404).send('Page not found')
 })

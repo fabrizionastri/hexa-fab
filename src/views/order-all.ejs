@@ -1,0 +1,10 @@
+<h1>Order summary</h1>
+<ul>
+  <% orders.forEach(function(order) { %>
+    <li>Order ID: <%= order.id %>
+    </li>
+    <li>Order name: <%= order.name %>
+    </li>
+    <br>
+    <% }); %>
+</ul>

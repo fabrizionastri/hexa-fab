@@ -1,0 +1,27 @@
+<h1>Order Detail</h1>
+
+<ul>
+  <li>Order ID: <%= order.id %>
+  <li>Name: <%= order.name %>
+  <li>Amount excluding tax: <%= order.withoutTaxAmount %> €
+  <li>Tax: <%= order.taxAmount %> €
+  <li>Amount including tax: <%= order.withTaxAmount %> €
+</ul>
+
+<h2>Order Items</h2>
+
+
+<% order.orderItems.forEach(function(item) { %>
+  <h4>Item ID: <%= item.id %>
+  </h4>
+  <ul>
+    <li>Name: <%= item.name %>
+    <li>Unit: <%= item.unit %>
+    <li>Price: <%= item.price %>
+    <li>Quantity: <%= item.quantity %>
+    <li>Amount excluding tax: <%= item.withoutTaxAmount %> €
+    <li>Tax: <%= item.taxAmount %> €
+    <li>Amount including tax: <%= item.withTaxAmount %> €
+  </ul>
+
+  <% }); %>

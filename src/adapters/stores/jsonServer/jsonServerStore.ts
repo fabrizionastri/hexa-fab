@@ -9,19 +9,19 @@ const myAxios = axios.create({
 
 const handleRequest =
   (httpMethod: Method) =>
-    async <T>(url: string, data?: any): Promise<T | undefined> => {
-      try {
-        const response: AxiosResponse = await myAxios.request({
-          url,
-          method: httpMethod,
-          data,
-        })
-        return response.data
-      } catch (error) {
+  async <T>(url: string, data?: any): Promise<T | undefined> => {
+    try {
+      const response: AxiosResponse = await myAxios.request({
+        url,
+        method: httpMethod,
+        data,
+      })
+      return response.data
+    } catch (error) {
       // console.error(error)
-        return undefined
-      }
+      return undefined
     }
+  }
 
 const $axios = {
   get: handleRequest('get'),
