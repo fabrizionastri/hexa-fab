@@ -3,7 +3,7 @@ import { Store } from '../../../core/gateways/store.gateway'
 import { Entity } from '../../../core/entities/store'
 
 const myAxios = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: 'http://localhost:3057/',
   timeout: 1000,
 })
 

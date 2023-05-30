@@ -1,4 +1,4 @@
-getByProperty
-store
-order
-orderItem
+server
+ejs
+entites
+gateways

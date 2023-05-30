@@ -9,7 +9,8 @@
     "test": "vitest --reporter verbose",
     "test:cov": "vitest --coverage",
     "dev": "nodemon",
-    "db": " json-server --watch C:/Users/fabri/Repos/clean-architecture/hexa-fab/mock/json/db.json"
+    "db": " json-server --port 3057 --watch ./mock/db.json",
+    "resetDb": "ts-node ./mock/resetDb.ts"
   },
   "keywords": [],
   "author": "",

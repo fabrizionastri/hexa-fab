@@ -2,6 +2,7 @@ import { OrderItem } from './orderItem'
 
 export type Order = {
   id: string
+  accountId: string
   name: string
   orderItems?: OrderItem[]
   principal?: number

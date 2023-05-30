@@ -19,14 +19,14 @@ let keepThisSection = true
 
 input.on('data', (chunk) => {
   const lines = chunk.toString().split('\n')
-  console.log('lines:', lines)
+  // console.log('lines:', lines)
 
   const filteredLines = lines.filter((line) => {
     if (line.startsWith('--- File: ')) {
       const filePath = line.slice('--- File: '.length).trim()
-      console.log('filePath:', filePath)
+      // console.log('filePath:', filePath)
       keepThisSection = containsFilter(filePath)
-      console.log('keepThisSection:', keepThisSection)
+      // console.log('keepThisSection:', keepThisSection)
     }
     return keepThisSection ? line : false
   })

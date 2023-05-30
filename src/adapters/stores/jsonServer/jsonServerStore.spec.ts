@@ -1,11 +1,16 @@
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
-import { resetJsonDB } from '../../../../mock/resetJsonDB'
+import { resetJsonDB } from '../../../../mock/resetDb'
 import { JsonServerStore } from './jsonServerStore'
 
 const orders = mockStore.orders
-const order4: Order = { id: 'order4', name: 'Bonnet', principal: 10 }
-const order5: Order = { id: '', name: 'Manteau' }
+const order4: Order = {
+  id: 'order4',
+  accountId: 'accountC',
+  name: 'Bonnet',
+  principal: 10,
+}
+const order5: Order = { id: '', accountId: 'accountD', name: 'Manteau' }
 
 resetJsonDB()
 
@@ -55,11 +60,11 @@ describe('JsonServerStore', () => {
 
     describe('update', () => {
       it('return updated order when posting order with valid ID ', async () => {
-        const updatedValues: Order = {
+        const updatedValues: Partial<Order> = {
           id: 'order4',
           name: 'Bonnet Bleu',
         }
-        order4.name = updatedValues.name
+        order4.name = updatedValues.name as string
         const result = await orderStore.update(updatedValues)
         console.log('order4 updated object:', order4)
         console.log('order4 updated result:', result)
