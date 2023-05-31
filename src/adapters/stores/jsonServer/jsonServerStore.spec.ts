@@ -1,22 +1,27 @@
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
-import { resetJsonDB } from '../../../../mock/resetDb'
 import { JsonServerStore } from './jsonServerStore'
+import { resetDb } from '../../../utils/resetDb'
 
 const orders = mockStore.orders
+
 const order4: Order = {
   id: 'order4',
-  accountId: 'accountC',
+  clientId: 'accountC',
+  supplierId: 'supplierX',
   name: 'Bonnet',
   principal: 10,
 }
-const order5: Order = { id: '', accountId: 'accountD', name: 'Manteau' }
-
-resetJsonDB()
+const order5: Order = {
+  id: '',
+  clientId: 'accountD',
+  supplierId: 'supplierY',
+  name: 'Manteau',
+}
 
 describe('JsonServerStore', () => {
   beforeAll(() => {
-    resetJsonDB()
+    resetDb()
   })
 
   describe('orders', () => {

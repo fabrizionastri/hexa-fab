@@ -8,17 +8,20 @@ export const mockStore: {
   orders: [
     {
       id: 'order1',
-      accountId: 'accountA',
+      clientId: 'accountA',
+      supplierId: 'accountB',
       name: '21 T-shirts (bleus + rouges)',
     },
     {
       id: 'order2',
-      accountId: 'accountA',
+      clientId: 'accountA',
+      supplierId: 'accountC',
       name: 'Chaussettes',
     },
     {
       id: 'order3',
-      accountId: 'accountB',
+      clientId: 'accountB',
+      supplierId: 'accountC',
       name: 'Chaussures',
     },
   ],
