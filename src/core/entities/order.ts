@@ -8,8 +8,8 @@ export interface Order {
   id: string
   clientId: string
   supplierId: string
-  name: string
-  orderItems: OrderItem[]
+  name?: string
+  orderItems?: OrderItem[]
   principal?: number
   withoutTaxAmount?: number
   withTaxAmount?: number
