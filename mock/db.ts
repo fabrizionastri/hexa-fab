@@ -7,6 +7,11 @@ export const mockStore: {
 } = {
   orders: [
     {
+      id: 'order0',
+      clientId: 'accountA',
+      supplierId: 'accountB',
+    },
+    {
       id: 'order1',
       clientId: 'accountA',
       supplierId: 'accountB',
