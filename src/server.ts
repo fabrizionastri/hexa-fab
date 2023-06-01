@@ -2,7 +2,7 @@
 
 import express, { Express, Request, Response } from 'express'
 
-import { orderStore } from './core/gateways/store.gateway'
+import { orderStore } from './core/gateways/order.gateway'
 import expressEjsLayouts from 'express-ejs-layouts'
 
 import { calculateOrder } from './core/usecases/calculateOrder'

@@ -1,4 +1,4 @@
-import { orderStore } from '../gateways/store.gateway'
+import { orderStore } from '../gateways/order.gateway'
 
 describe('getAllOrdersForAccount', () => {
   it('should return [] when no matching id is found', () => {

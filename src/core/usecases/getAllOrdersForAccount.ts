@@ -1,5 +1,5 @@
 import { Order } from '../entities/order'
-import { orderStore } from '../gateways/store.gateway'
+import { orderStore } from '../gateways/order.gateway'
 import { getByProperty } from './getByProperty'
 
 export const getAllOrdersForAccount = (accountId: string): Order[] => {

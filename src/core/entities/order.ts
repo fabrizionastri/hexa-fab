@@ -4,7 +4,7 @@ import { OrderItem } from './orderItem'
 // Question: should we store order items in order or order it in items ?
 // Question: should we store them as ids or as objects ?
 
-export type Order = {
+export interface Order {
   id: string
   clientId: string
   supplierId: string

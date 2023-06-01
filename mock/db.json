@@ -17,6 +17,12 @@
       "clientId": "accountB",
       "supplierId": "accountC",
       "name": "Chaussures"
+    },
+    {
+      "id": "bZ8F3oo",
+      "clientId": "accountD",
+      "supplierId": "supplierY",
+      "name": "Manteau"
     }
   ],
   "orderItems": [

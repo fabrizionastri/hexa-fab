@@ -1,6 +1,6 @@
 import { Order } from '../entities/order'
 import { OrderItem } from '../entities/orderItem'
-import { orderItemStore } from '../gateways/store.gateway'
+import { orderItemStore } from '../gateways/order.gateway'
 import { calculateOrderItem } from './calculateOrderItem'
 import { getByProperty } from './getByProperty'
 

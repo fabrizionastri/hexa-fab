@@ -1,5 +1,5 @@
-import { orderGateway } from '../gateways/order.gateway'
+// import { OrderGateway } from '../gateways/order.gateway'
 
 export const getAllOrdersWithItems = () => {
-  return orderGateway()
+  return []
 }

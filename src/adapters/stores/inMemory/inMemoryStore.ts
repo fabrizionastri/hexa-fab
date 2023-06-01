@@ -1,4 +1,4 @@
-import { Store } from './../../../core/gateways/store.gateway'
+import { Store } from '../../../core/gateways/order.gateway'
 import { mockStore } from '../../../../mock/db'
 import { Entity } from '../../../core/entities/store'
 import { Order } from '../../../core/entities/order'

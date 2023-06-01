@@ -1,3 +1,4 @@
+import { OrderItem } from './../../../core/entities/orderItem'
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
 import { JsonServerStore } from './jsonServerStore'
@@ -10,12 +11,14 @@ const order4: Order = {
   clientId: 'accountC',
   supplierId: 'supplierX',
   name: 'Bonnet',
+  orderItems: [],
   principal: 10,
 }
 const order5: Order = {
   id: '',
   clientId: 'accountD',
   supplierId: 'supplierY',
+  orderItems: [],
   name: 'Manteau',
 }
 

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, Method } from 'axios'
-import { Store } from '../../../core/gateways/store.gateway'
+import { Store } from '../../../core/gateways/order.gateway'
 import { Entity } from '../../../core/entities/store'
 
 const myAxios = axios.create({
@@ -55,6 +55,9 @@ export const JsonServerStore = <T extends Entity>(
         ...partialEntity,
       })
       return await $axios.put<T>(`/${resource}/${id}`, updatedEntity)
+    },
+    getByProperty() {
+      throw new Error('Method not implemented.')
     },
   }
 }
