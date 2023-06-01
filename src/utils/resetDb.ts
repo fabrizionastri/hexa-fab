@@ -4,7 +4,7 @@ import path from 'path'
 
 import { mockStore } from '../../mock/db'
 
-const resetDb = () => {
+export const resetDb = () => {
   const json = JSON.stringify(mockStore, null, 2)
   // const dirname = path.dirname(fileURLToPath(import.meta.url))
   // const dirname = './mock' // use for use in this repo

@@ -24,7 +24,7 @@ const order5: Order = {
 
 describe('JsonServerStore', () => {
   beforeAll(() => {
-    // resetDb()
+    resetDb()
   })
 
   describe('orders', () => {
