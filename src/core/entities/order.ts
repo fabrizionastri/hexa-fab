@@ -9,7 +9,7 @@ export type Order = {
   clientId: string
   supplierId: string
   name: string
-  orderItems?: OrderItem[]
+  orderItems: OrderItem[]
   principal?: number
   withoutTaxAmount?: number
   withTaxAmount?: number

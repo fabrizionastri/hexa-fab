@@ -60,5 +60,25 @@ export const InMemoryStore = <T extends Entity>(
       store[index] = updatedEntity
       return updatedEntity
     },
+    getByProperty: async (
+      property: keyof T,
+      value: any
+    ): Promise<T[] | undefined> => {
+      return store.filter((entity: T) => entity[property] === value)
+    },
+    getForAccount: async (accountId: string): Promise<T[] | undefined> => {
+      return store.filter(
+        (entity: T) =>
+          (entity as unknown as Order).clientId === accountId ||
+          (entity as unknown as Order).supplierId === accountId
+      )
+    },
+    // getAllCommitmentForAccount: async (accountId: string): Promise<T[] | undefined> => {
+    //   return store.filter(
+    //     (entity: T) =>
+    //       (entity as unknown as Order).payeeId === accountId ||
+    //       (entity as unknown as Order).payorId === accountId
+    //   )
+    // }
   }
 }
