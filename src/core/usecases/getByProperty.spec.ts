@@ -1,7 +1,7 @@
 import { mockStore } from '../../../mock/db'
 
 import { OrderItemAdapterIM } from '../../adapters/stores/inMemory/orderItem.adapter.im'
-import { JsonServerStore } from '../../adapters/stores/jsonServer/jsonServerStore'
+import { JsonServerStore } from '../../adapters/stores/jsonServer/order.adapter.js.js'
 // import { Order } from '../../core/entities/order'
 import { OrderItem } from '../entities/orderItem'
 import { getByProperty } from './getByProperty'
