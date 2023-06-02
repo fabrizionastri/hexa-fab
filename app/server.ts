@@ -2,10 +2,10 @@
 
 import express, { Express, Request, Response } from 'express'
 
-import { orderStore } from './core/gateways/order.gateway'
+import { orderStore } from '../../src/core/adapters/stores/stores'
 import expressEjsLayouts from 'express-ejs-layouts'
 
-import { calculateOrder } from './core/usecases/calculateOrder'
+import { calculateOrder } from '../src/core/usecases/calculateOrder'
 
 // SERVER SET UP
 
@@ -25,7 +25,7 @@ app.use(express.json()) // To parse incoming JSON requests. Important : if you d
 // DATABASE SET UP
 
 app.get('/', (_req: Request, res: Response) => {
-  res.send(`⚡️Server is running at ${expressUrl}`)
+  res.send(`⚡️Server is running at ${expressUrl}, with STORE_TYPE= ${process.env.STORE_TYPE}}`)
 })
 
 app.get('/order', async (_req: Request, res: Response) => {

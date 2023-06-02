@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, Method } from 'axios'
-import { Order } from 'vitest/dist/types-94cfe4b4'
 import { OrderGateway } from '../../../core/gateways/order.gateway'
+import { Order } from '../../../core/entities/order'
 
 const myAxios = axios.create({
   baseURL: 'http://localhost:3057/',
@@ -30,7 +30,7 @@ const $axios = {
   put: handleRequest('put'),
 }
 
-export const OrderAdapterJS: OrderGateway = {
+export const OrderStoreJS: OrderGateway = {
   getById: async (id: string): Promise<Order | undefined> => {
     return $axios.get<Order>(`/orders/${id}`)
   },
@@ -43,10 +43,7 @@ export const OrderAdapterJS: OrderGateway = {
   deleteById: async (id: string): Promise<Order | undefined> => {
     return await $axios.delete<Order>(`/orders/${id}`)
   },
-  update: async (
-    id: string,
-    partialEntity: Partial<Order>
-  ): Promise<Order | undefined> => {
+  update: async (id: string, partialEntity: Partial<Order>): Promise<Order | undefined> => {
     const existingEntity = await $axios.get<Order>(`/orders/${id}`)
     const updatedEntity = Object.assign({
       ...existingEntity,

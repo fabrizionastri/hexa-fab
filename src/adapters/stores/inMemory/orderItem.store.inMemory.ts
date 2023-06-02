@@ -6,7 +6,7 @@ import { OrderItemGateway } from '../../../core/gateways/orderItem.gateway'
 
 const store: OrderItem[] = mockStore.orderItems
 
-export const OrderItemAdapterIM: OrderItemGateway = {
+export const OrderItemStoreIM: OrderItemGateway = {
   getById: async (id: string): Promise<OrderItem | undefined> => {
     return store.find((entity: OrderItem) => entity.id === id)
   },
@@ -32,10 +32,7 @@ export const OrderItemAdapterIM: OrderItemGateway = {
       1
     )[0]
   },
-  update: async (
-    id: string,
-    partialEntity: Partial<OrderItem>
-  ): Promise<OrderItem | undefined> => {
+  update: async (id: string, partialEntity: Partial<OrderItem>): Promise<OrderItem | undefined> => {
     // if (!('id' in partialEntity)) return undefined
     const index = store.findIndex((entity) => entity.id === id)
     if (index === -1) return undefined
@@ -55,8 +52,6 @@ export const OrderItemAdapterIM: OrderItemGateway = {
     return store.filter((entity: OrderItem) => entity[property] === value)
   },
   getForOrder: async (orderId: string): Promise<OrderItem[] | undefined> => {
-    return store.filter(
-      (entity: OrderItem) => (entity as unknown as Order).clientId === orderId
-    )
+    return store.filter((entity: OrderItem) => (entity as unknown as Order).clientId === orderId)
   },
 }

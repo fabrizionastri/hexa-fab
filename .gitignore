@@ -29,3 +29,4 @@ dist-ssr
 .project_structure_filter
 project_structure_filter.txt
 project_structure.txt
+project_structure_filter.ts

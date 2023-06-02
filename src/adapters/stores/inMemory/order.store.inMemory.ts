@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 
 const store: Order[] = mockStore.orders
 
-export const OrderAdapterIM: OrderGateway = {
+export const OrderStoreIM: OrderGateway = {
   getById: async (id: string): Promise<Order | undefined> => {
     return store.find((entity: Order) => entity.id === id)
   },
@@ -31,10 +31,7 @@ export const OrderAdapterIM: OrderGateway = {
       1
     )[0]
   },
-  update: async (
-    id: string,
-    partialEntity: Partial<Order>
-  ): Promise<Order | undefined> => {
+  update: async (id: string, partialEntity: Partial<Order>): Promise<Order | undefined> => {
     // if (!('id' in partialEntity)) return undefined
     const index = store.findIndex((entity) => entity.id === id)
     if (index === -1) return undefined
@@ -47,10 +44,7 @@ export const OrderAdapterIM: OrderGateway = {
     store[index] = updatedEntity
     return updatedEntity
   },
-  getByProperty: async (
-    property: keyof Order,
-    value: any
-  ): Promise<Order[] | undefined> => {
+  getByProperty: async (property: keyof Order, value: any): Promise<Order[] | undefined> => {
     return store.filter((entity: Order) => entity[property] === value)
   },
   getForAccount: async (accountId: string): Promise<Order[] | undefined> => {

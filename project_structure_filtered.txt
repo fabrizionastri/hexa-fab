@@ -1,0 +1,398 @@
+--- Folder Structure ---
+[app]
+    ├── server.ts
+    └── [views]
+        ├── layout.ejs
+        ├── order-all.ejs
+        └── order-detail.ejs
+project_structure_filter.ts
+[src]
+    ├── [adapters]
+        └── [stores]
+            ├── [inMemory]
+                ├── order.store.inMemory.spec.ts
+                ├── order.store.inMemory.ts
+                ├── orderItem.store.inMemory.spec.ts
+                └── orderItem.store.inMemory.ts
+            ├── [jsonServer]
+                └── order.store.jsonServer.ts
+            └── stores.ts
+    ├── [core]
+        ├── [entities]
+            ├── order.ts
+            └── orderItem.ts
+        ├── [gateways]
+            ├── order.gateway.ts
+            └── orderItem.gateway.ts
+        └── [usecases]
+            ├── calculateOrder.ts
+            ├── calculateOrderItem.ts
+            ├── getAllOrdersForAccount.spec.ts
+            ├── getAllOrdersForAccount.ts
+            ├── getAllOrdersWithItems.spec.ts
+            ├── getAllOrdersWithItems.ts
+            ├── getByProperty.spec.ts
+            └── getByProperty.ts
+    └── [utils]
+        └── resetDb.ts
+--- File Contents ---
+--- File: src\adapters\stores\inMemory\order.store.inMemory.spec.ts ---
+import { mockStore } from '../../../../mock/db'
+import { Order } from '../../../core/entities/order'
+import { OrderStoreIM } from './order.store.inMemory'
+import { OrderStoreJS } from '../jsonServer/order.store.jsonServer'
+import { resetDb } from '../../../utils/resetDb'
+const orders = mockStore.orders
+const order4: Order = {
+  id: 'order4',
+  clientId: 'clientA',
+  supplierId: 'clientC',
+  name: 'Bonnet',
+  principal: 10,
+}
+const order5: Order = {
+  id: '',
+  clientId: 'clientB',
+  supplierId: 'clientC',
+  name: 'Manteau',
+}
+const orderAdapters = [
+  { adapterName: 'OrderAdapterIM', orderAdapter: OrderStoreIM },
+  { adapterName: 'OrderAdapterJS', orderAdapter: OrderStoreJS },
+]
+describe('OrderAdapter', () => {
+  beforeAll(async () => {
+    resetDb()
+  })
+  orderAdapters.forEach(({ adapterName, orderAdapter }) => {
+    describe(adapterName, () => {
+      describe('getById', () => {
+        it('return 1 order for valid id', async () => {
+          const order = await orderAdapter.getById('order1')
+          expect(order).toEqual(orders[1])
+        })
+        it('return undefined for inexistant id', async () => {
+          const order = await orderAdapter.getById('inexistant')
+          expect(order).toEqual(undefined)
+        })
+      })
+      describe('getAll', () => {
+        it('return all orders when orders are present', async () => {
+          const result = await orderAdapter.getAll()
+          expect(result).toEqual(orders)
+        })
+      })
+      describe('create', () => {
+        it('return order with same ID when posting order with ID', async () => {
+          const result = await orderAdapter.create(order4)
+          // console.log('order4:', result)
+          expect(result).toBeDefined()
+          expect(result).toEqual(order4)
+        })
+        it('return order with new ID when posting order without valid ID', async () => {
+          const result = await orderAdapter.create(order5)
+          if (!result?.id) return undefined
+          order5.id = result.id
+          // console.log('newOrder 5 result:', result)
+          // console.log('newOrder 5 newOrder:', order5)
+          expect(result).toEqual(order5)
+          if (order5.id) await orderAdapter.deleteById(order5.id)
+        })
+      })
+      describe('update', () => {
+        it('return updated order when posting order with valid ID ', async () => {
+          const updatedValues: Partial<Order> = {
+            id: 'order4',
+            name: 'Bonnet Bleu',
+          }
+          order4.name = updatedValues.name ?? ''
+          const result = await orderAdapter.update('order4', updatedValues)
+          // console.log('order4 updated object:', order4)
+          // console.log('order4 updated result:', result)
+          expect(result).toEqual(order4)
+        })
+        it('return order with new ID when posting order without ID', async () => {
+          const result = await orderAdapter.update('order5', order5)
+          if (!result?.id) return undefined
+          order5.id = result.id
+          // console.log('newOrder 5 result:', result)
+          // console.log('newOrder 5 newOrder:', order5)
+          expect(result).toEqual(order5)
+          if (order5.id) await orderAdapter.deleteById(order5.id)
+        })
+      })
+      describe('deleteById', () => {
+        it('return order when sucessfully deleting an order with a valid ID', async () => {
+          const result = await orderAdapter.deleteById('order4')
+          expect(result).toEqual(result)
+        })
+      })
+    })
+  })
+})
+--- File: src\adapters\stores\inMemory\order.store.inMemory.ts ---
+import { OrderGateway } from '../../../core/gateways/order.gateway'
+import { mockStore } from '../../../../mock/db'
+import { Order } from '../../../core/entities/order'
+import { nanoid } from 'nanoid'
+const store: Order[] = mockStore.orders
+export const OrderStoreIM: OrderGateway = {
+  getById: async (id: string): Promise<Order | undefined> => {
+    return store.find((entity: Order) => entity.id === id)
+  },
+  getAll: async (): Promise<Order[] | undefined> => {
+    return store
+  },
+  create: async (entity: Order): Promise<Order | undefined> => {
+    // if entity does not have an id, generate an unique id using nanoid
+    if (!entity.id) entity.id = nanoid()
+    // if this id already exists, replace it with a unique id using nanoid
+    while (store.find((e: Order) => e.id === entity.id)) {
+      entity.id = nanoid()
+    }
+    store.push(entity)
+    return entity
+  },
+  deleteById: async (id: string): Promise<Order | undefined> => {
+    // if the store does not contain an entity with this id, return undefined
+    if (!store.find((entity: Order) => entity.id === id)) return undefined
+    // if the store contains an entity with this id, remove it and return the entity
+    return store.splice(
+      store.findIndex((entity: Order) => entity.id === id),
+      1
+    )[0]
+  },
+  update: async (id: string, partialEntity: Partial<Order>): Promise<Order | undefined> => {
+    // if (!('id' in partialEntity)) return undefined
+    const index = store.findIndex((entity) => entity.id === id)
+    if (index === -1) return undefined
+    const existingEntity = store[index]
+    // const updatedEntity = { ...store[index], ...partialEntity }
+    const updatedEntity = Object.assign({
+      ...existingEntity,
+      ...partialEntity,
+    })
+    store[index] = updatedEntity
+    return updatedEntity
+  },
+  getByProperty: async (property: keyof Order, value: any): Promise<Order[] | undefined> => {
+    return store.filter((entity: Order) => entity[property] === value)
+  },
+  getForAccount: async (accountId: string): Promise<Order[] | undefined> => {
+    return store.filter(
+      (entity: Order) =>
+        (entity as unknown as Order).clientId === accountId ||
+        (entity as unknown as Order).supplierId === accountId
+    )
+  },
+}
+--- File: src\adapters\stores\inMemory\orderItem.store.inMemory.spec.ts ---
+import { mockStore } from '../../../../mock/db'
+import { OrderItem } from '../../../core/entities/orderItem'
+import { OrderItemStoreIM as OrderItemAdapter } from './orderItem.store.inMemory'
+const orders = mockStore.orderItems
+const orderItem4: OrderItem = {
+  id: 'orderItem4',
+  orderId: 'Order2',
+  name: 'chausse pied',
+  quantity: 1,
+  unit: 'unit',
+  price: 5,
+  tax: 0.2,
+}
+const orderItemX: OrderItem = {
+  id: '',
+  orderId: 'Order3',
+  name: 'semelle',
+  quantity: 1,
+  unit: 'unit',
+  price: 10,
+  tax: 0.2,
+}
+describe('OrderItemAdapterIM', () => {
+  describe('orders', () => {
+    const orderItemAdapter = OrderItemAdapter
+    describe('getById', () => {
+      it('return 1 order for valid id', async () => {
+        const result: OrderItem | undefined = await orderItemAdapter.getById('orderItem1')
+        expect(result).toEqual(orders[1])
+      })
+      it('return undefined for inexistant id', async () => {
+        const order: OrderItem | undefined = await orderItemAdapter.getById('inexistant')
+        expect(order).toEqual(undefined)
+      })
+    })
+    describe('getAll', () => {
+      it('return all orders when orders are present', async () => {
+        const result: OrderItem[] | undefined = await orderItemAdapter.getAll()
+        expect(result).toEqual(orders)
+      })
+    })
+    describe('create', () => {
+      it('return order with same ID when posting order with ID', async () => {
+        const result = await orderItemAdapter.create(orderItem4)
+        // console.log('order4:', result)
+        expect(result).toBeDefined()
+        expect(result).toEqual(orderItem4)
+      })
+      it('return order with new ID when posting order without valid ID', async () => {
+        const result = await orderItemAdapter.create(orderItemX)
+        if (!result?.id) return undefined
+        orderItemX.id = result.id
+        // console.log('OrderItem X result from create:', result)
+        // console.log('OrderItem X updated order with:', orderItemX)
+        expect(result).toEqual(orderItemX)
+        if (orderItemX.id) await orderItemAdapter.deleteById(orderItemX.id)
+      })
+    })
+    describe('update', () => {
+      it('return updated order when posting order with valid ID ', async () => {
+        const updatedValues: Partial<OrderItem> = {
+          name: 'Chausse pied en métal',
+        }
+        orderItem4.name = updatedValues.name ?? ''
+        const result = await orderItemAdapter.update('orderItem4', updatedValues)
+        // console.log('orderItem4 updated object:', orderItem4)
+        // console.log('orderItem4 updated result:', result)
+        expect(result).toEqual(orderItem4)
+      })
+      it('return order with new ID when posting order without ID', async () => {
+        const result = await orderItemAdapter.update('order5', orderItemX)
+        if (!result?.id) return undefined
+        orderItemX.id = result.id
+        // console.log('newOrder 5 result:', result)
+        // console.log('newOrder 5 newOrder:', orderItemX)
+        expect(result).toEqual(orderItemX)
+        if (orderItemX.id) await orderItemAdapter.deleteById(orderItemX.id)
+      })
+    })
+    describe('deleteById', () => {
+      it('return order when sucessfully deleting an order with a valid ID', async () => {
+        const result = await orderItemAdapter.deleteById('order4')
+        expect(result).toEqual(result)
+      })
+    })
+  })
+})
+--- File: src\adapters\stores\inMemory\orderItem.store.inMemory.ts ---
+import { mockStore } from '../../../../mock/db'
+import { Order } from '../../../core/entities/order'
+import { OrderItem } from '../../../core/entities/orderItem'
+import { nanoid } from 'nanoid'
+import { OrderItemGateway } from '../../../core/gateways/orderItem.gateway'
+const store: OrderItem[] = mockStore.orderItems
+export const OrderItemStoreIM: OrderItemGateway = {
+  getById: async (id: string): Promise<OrderItem | undefined> => {
+    return store.find((entity: OrderItem) => entity.id === id)
+  },
+  getAll: async (): Promise<OrderItem[] | undefined> => {
+    return store
+  },
+  create: async (entity: OrderItem): Promise<OrderItem | undefined> => {
+    // if entity does not have an id, generate an unique id using nanoid
+    if (!entity.id) entity.id = nanoid()
+    // if this id already exists, replace it with a unique id using nanoid
+    while (store.find((e: OrderItem) => e.id === entity.id)) {
+      entity.id = nanoid()
+    }
+    store.push(entity)
+    return entity
+  },
+  deleteById: async (id: string): Promise<OrderItem | undefined> => {
+    // if the store does not contain an entity with this id, return undefined
+    if (!store.find((entity: OrderItem) => entity.id === id)) return undefined
+    // if the store contains an entity with this id, remove it and return the entity
+    return store.splice(
+      store.findIndex((entity: OrderItem) => entity.id === id),
+      1
+    )[0]
+  },
+  update: async (id: string, partialEntity: Partial<OrderItem>): Promise<OrderItem | undefined> => {
+    // if (!('id' in partialEntity)) return undefined
+    const index = store.findIndex((entity) => entity.id === id)
+    if (index === -1) return undefined
+    const existingEntity = store[index]
+    // const updatedEntity = { ...store[index], ...partialEntity }
+    const updatedEntity = Object.assign({
+      ...existingEntity,
+      ...partialEntity,
+    })
+    store[index] = updatedEntity
+    return updatedEntity
+  },
+  getByProperty: async (
+    property: keyof OrderItem,
+    value: any
+  ): Promise<OrderItem[] | undefined> => {
+    return store.filter((entity: OrderItem) => entity[property] === value)
+  },
+  getForOrder: async (orderId: string): Promise<OrderItem[] | undefined> => {
+    return store.filter((entity: OrderItem) => (entity as unknown as Order).clientId === orderId)
+  },
+}
+--- File: src\adapters\stores\jsonServer\order.store.jsonServer.ts ---
+import axios, { AxiosResponse, Method } from 'axios'
+import { OrderGateway } from '../../../core/gateways/order.gateway'
+import { Order } from '../../../core/entities/order'
+const myAxios = axios.create({
+  baseURL: 'http://localhost:3057/',
+  timeout: 1000,
+})
+const handleRequest =
+  (httpMethod: Method) =>
+  async <Order>(url: string, data?: any): Promise<Order | undefined> => {
+    try {
+      const response: AxiosResponse = await myAxios.request({
+        url,
+        method: httpMethod,
+        data,
+      })
+      return response.data
+    } catch (error) {
+      // console.error(error)
+      return undefined
+    }
+  }
+const $axios = {
+  get: handleRequest('get'),
+  post: handleRequest('post'),
+  delete: handleRequest('delete'),
+  put: handleRequest('put'),
+}
+export const OrderStoreJS: OrderGateway = {
+  getById: async (id: string): Promise<Order | undefined> => {
+    return $axios.get<Order>(`/orders/${id}`)
+  },
+  getAll: async (): Promise<Order[] | undefined> => {
+    return $axios.get<Order[]>('/orders')
+  },
+  create: async (entity: Order): Promise<Order | undefined> => {
+    return await $axios.post<Order>('/orders', entity)
+  },
+  deleteById: async (id: string): Promise<Order | undefined> => {
+    return await $axios.delete<Order>(`/orders/${id}`)
+  },
+  update: async (id: string, partialEntity: Partial<Order>): Promise<Order | undefined> => {
+    const existingEntity = await $axios.get<Order>(`/orders/${id}`)
+    const updatedEntity = Object.assign({
+      ...existingEntity,
+      ...partialEntity,
+    })
+    return await $axios.put<Order>(`/orders/${id}`, updatedEntity)
+  },
+  getByProperty() {
+    throw new Error('Method not implemented.')
+  },
+  getForAccount: async (accountId: string): Promise<Order[] | undefined> => {
+    return $axios.get<Order[]>(`/orders?clientId=${accountId}`)
+  },
+}
+--- File: src\adapters\stores\stores.ts ---
+const store_type = process.env.STORE_TYPE
+// write a code that will import the right store depending on the value of the STORE_TYPE environment variable and export it as the default export of this file
+if (store_type === 'inMemory') {
+  export { OrderStoreIM as orderStore } from './inMemory/order.store.inMemory'
+}
+if (store_type === 'mongo') {
+  export { OrderStoreMongo as orderStore } from './mongo/order.store.mongo'
+}
