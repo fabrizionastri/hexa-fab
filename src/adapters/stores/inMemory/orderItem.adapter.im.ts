@@ -1,40 +1,41 @@
-import { OrderGateway } from '../../../core/gateways/order.gateway'
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
+import { OrderItem } from '../../../core/entities/orderItem'
 import { nanoid } from 'nanoid'
+import { OrderItemGateway } from '../../../core/gateways/orderItem.gateway'
 
-const store: Order[] = mockStore.orders
+const store: OrderItem[] = mockStore.orderItems
 
-export const OrderAdapterIM: OrderGateway = {
-  getById: async (id: string): Promise<Order | undefined> => {
-    return store.find((entity: Order) => entity.id === id)
+export const OrderItemAdapterIM: OrderItemGateway = {
+  getById: async (id: string): Promise<OrderItem | undefined> => {
+    return store.find((entity: OrderItem) => entity.id === id)
   },
-  getAll: async (): Promise<Order[] | undefined> => {
+  getAll: async (): Promise<OrderItem[] | undefined> => {
     return store
   },
-  create: async (entity: Order): Promise<Order | undefined> => {
+  create: async (entity: OrderItem): Promise<OrderItem | undefined> => {
     // if entity does not have an id, generate an unique id using nanoid
     if (!entity.id) entity.id = nanoid()
     // if this id already exists, replace it with a unique id using nanoid
-    while (store.find((e: Order) => e.id === entity.id)) {
+    while (store.find((e: OrderItem) => e.id === entity.id)) {
       entity.id = nanoid()
     }
     store.push(entity)
     return entity
   },
-  deleteById: async (id: string): Promise<Order | undefined> => {
+  deleteById: async (id: string): Promise<OrderItem | undefined> => {
     // if the store does not contain an entity with this id, return undefined
-    if (!store.find((entity: Order) => entity.id === id)) return undefined
+    if (!store.find((entity: OrderItem) => entity.id === id)) return undefined
     // if the store contains an entity with this id, remove it and return the entity
     return store.splice(
-      store.findIndex((entity: Order) => entity.id === id),
+      store.findIndex((entity: OrderItem) => entity.id === id),
       1
     )[0]
   },
   update: async (
     id: string,
-    partialEntity: Partial<Order>
-  ): Promise<Order | undefined> => {
+    partialEntity: Partial<OrderItem>
+  ): Promise<OrderItem | undefined> => {
     // if (!('id' in partialEntity)) return undefined
     const index = store.findIndex((entity) => entity.id === id)
     if (index === -1) return undefined
@@ -48,16 +49,14 @@ export const OrderAdapterIM: OrderGateway = {
     return updatedEntity
   },
   getByProperty: async (
-    property: keyof Order,
+    property: keyof OrderItem,
     value: any
-  ): Promise<Order[] | undefined> => {
-    return store.filter((entity: Order) => entity[property] === value)
+  ): Promise<OrderItem[] | undefined> => {
+    return store.filter((entity: OrderItem) => entity[property] === value)
   },
-  getForAccount: async (accountId: string): Promise<Order[] | undefined> => {
+  getForOrder: async (orderId: string): Promise<OrderItem[] | undefined> => {
     return store.filter(
-      (entity: Order) =>
-        (entity as unknown as Order).clientId === accountId ||
-        (entity as unknown as Order).supplierId === accountId
+      (entity: OrderItem) => (entity as unknown as Order).clientId === orderId
     )
   },
 }

@@ -32,6 +32,15 @@ export const mockStore: {
   ],
   orderItems: [
     {
+      id: 'orderItem0',
+      orderId: 'order0',
+      name: '0',
+      quantity: 0,
+      unit: 'unit',
+      price: 0,
+      tax: 0,
+    },
+    {
       id: 'orderItem1',
       orderId: 'order1',
       name: 'T-shirt rouge',
@@ -56,15 +65,6 @@ export const mockStore: {
       quantity: 3,
       unit: 'pair',
       price: 5,
-      tax: 0.2,
-    },
-    {
-      id: 'orderItem4',
-      orderId: 'order3',
-      name: 'Chaussures en cuir',
-      quantity: 1,
-      unit: 'pair',
-      price: 250,
       tax: 0.2,
     },
   ],

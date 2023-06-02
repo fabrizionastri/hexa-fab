@@ -1,4 +1,4 @@
-import { OrderItem } from './../../../core/entities/orderItem'
+import { OrderItem } from '../../../core/entities/orderItem'
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
 import { JsonServerStore } from './jsonServerStore'
