@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 
 const store: Order[] = mockStore.orders
 
-export const OrderStoreIM: OrderGateway = {
+export const OrderStoreInMemory: OrderGateway = {
   getById: async (id: string): Promise<Order | undefined> => {
     return store.find((entity: Order) => entity.id === id)
   },

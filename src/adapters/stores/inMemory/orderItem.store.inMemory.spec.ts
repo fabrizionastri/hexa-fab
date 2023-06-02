@@ -1,6 +1,6 @@
 import { mockStore } from '../../../../mock/db'
 import { OrderItem } from '../../../core/entities/orderItem'
-import { OrderItemStoreIM as OrderItemAdapter } from './orderItem.store.inMemory'
+import { OrderItemStoreInMemory as OrderItemAdapter } from './orderItem.store.inMemory'
 
 const orders = mockStore.orderItems
 

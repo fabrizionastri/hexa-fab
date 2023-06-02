@@ -388,11 +388,3 @@ export const OrderStoreJS: OrderGateway = {
   },
 }
 --- File: src\adapters\stores\stores.ts ---
-const store_type = process.env.STORE_TYPE
-// write a code that will import the right store depending on the value of the STORE_TYPE environment variable and export it as the default export of this file
-if (store_type === 'inMemory') {
-  export { OrderStoreIM as orderStore } from './inMemory/order.store.inMemory'
-}
-if (store_type === 'mongo') {
-  export { OrderStoreMongo as orderStore } from './mongo/order.store.mongo'
-}

@@ -1,5 +1,5 @@
 import { mockStore } from '../../../mock/db'
-import { OrderItemStoreIM } from '../../adapters/stores/inMemory/orderItem.store.inMemory'
+import { OrderItemStoreInMemory } from '../../adapters/stores/inMemory/orderItem.store.inMemory'
 
 // import { Order } from '../../core/entities/order'
 import { OrderItem } from '../entities/orderItem'
@@ -8,7 +8,7 @@ import { getByProperty } from './getByProperty'
 const ordersItems = mockStore.orderItems
 
 describe('getByProperty', () => {
-  const orderItemStore = OrderItemStoreIM
+  const orderItemStore = OrderItemStoreInMemory
   it('return list of 2 childs of Order 1', async () => {
     // const orderInMemoryStore = ordersMock
     expect(await getByProperty<OrderItem>('orderId', 'order1', orderItemStore)).toEqual(

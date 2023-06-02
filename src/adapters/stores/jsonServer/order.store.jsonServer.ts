@@ -30,7 +30,7 @@ const $axios = {
   put: handleRequest('put'),
 }
 
-export const OrderStoreJS: OrderGateway = {
+export const OrderStoreJsonServer: OrderGateway = {
   getById: async (id: string): Promise<Order | undefined> => {
     return $axios.get<Order>(`/orders/${id}`)
   },

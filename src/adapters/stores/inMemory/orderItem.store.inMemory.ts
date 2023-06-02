@@ -6,7 +6,7 @@ import { OrderItemGateway } from '../../../core/gateways/orderItem.gateway'
 
 const store: OrderItem[] = mockStore.orderItems
 
-export const OrderItemStoreIM: OrderItemGateway = {
+export const OrderItemStoreInMemory: OrderItemGateway = {
   getById: async (id: string): Promise<OrderItem | undefined> => {
     return store.find((entity: OrderItem) => entity.id === id)
   },
