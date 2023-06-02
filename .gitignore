@@ -26,9 +26,10 @@ dist-ssr
 *.sw?
 .env
 *.spec.ts
+**/*.spec.ts
 
 .project_structure_ignore
 .project_structure_filter
-project_structure_filter.txt
+project_structure_filtered.txt
 project_structure.txt
 project_structure_filter.ts
