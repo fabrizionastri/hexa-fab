@@ -1,3 +1,5 @@
+import { OrderGateway } from '../../core/gateways/order.gateway'
+import { OrderItemGateway } from '../../core/gateways/orderItem.gateway'
 import { OrderStoreInMemory } from './inMemory/order.store.inMemory'
 import { OrderItemStoreInMemory } from './inMemory/orderItem.store.inMemory'
 import { OrderStoreJsonServer } from './jsonServer/order.store.jsonServer'
@@ -8,8 +10,8 @@ dotenv.config()
 
 const STORE_TYPE = process.env.STORE_TYPE
 
-let OrderStore
-let OrderItemStore
+let OrderStore: OrderGateway
+let OrderItemStore: OrderItemGateway
 
 switch (STORE_TYPE) {
   case 'inMemory':

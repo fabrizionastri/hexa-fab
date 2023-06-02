@@ -1,6 +1,6 @@
 import { Order } from '../entities/order'
 import { OrderItem } from '../entities/orderItem'
-import { orderItemStore } from '../gateways/order.gateway'
+import { OrderItemStore } from '../../adapters/stores/stores'
 import { calculateOrderItem } from './calculateOrderItem'
 import { getByProperty } from './getByProperty'
 
@@ -9,25 +9,15 @@ export const withoutTaxAmount = (orderItems: OrderItem[]): number => {
 }
 
 export const withTaxAmount = (orderItems: OrderItem[]): number => {
-  return orderItems.reduce(
-    (acc, item) => acc + item.price * item.quantity * (1 + item.tax),
-    0
-  )
+  return orderItems.reduce((acc, item) => acc + item.price * item.quantity * (1 + item.tax), 0)
 }
 
 export const taxAmount = (orderItems: OrderItem[]): number => {
-  return orderItems.reduce(
-    (acc, item) => acc + item.price * item.quantity * item.tax,
-    0
-  )
+  return orderItems.reduce((acc, item) => acc + item.price * item.quantity * item.tax, 0)
 }
 
 export const calculateOrder = async (order: Order): Promise<Order> => {
-  let orderItems = await getByProperty<OrderItem>(
-    'orderId',
-    order.id,
-    orderItemStore
-  )
+  let orderItems = await getByProperty<OrderItem>('orderId', order.id, OrderItemStore)
   // for each orderItem, calculateOrderItem and update the orderItem
   orderItems = orderItems.map((item) => calculateOrderItem(item))
 
