@@ -1,5 +1,5 @@
-import { Order } from '../entities/order'
 import { OrderStore } from '../../adapters/stores/stores'
+import { Order } from '../entities/order'
 import { getByProperty } from './getByProperty'
 
 export const getAllOrdersForAccount = async (accountId: string): Order[] => {

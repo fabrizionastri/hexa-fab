@@ -1,10 +1,9 @@
 // IMPORT MODULES
 
 import express, { Express, Request, Response } from 'express'
-
-import { orderStore } from '../../src/core/adapters/stores/stores'
 import expressEjsLayouts from 'express-ejs-layouts'
 
+import { orderStore } from '../../src/core/adapters/stores/stores'
 import { calculateOrder } from '../src/core/usecases/calculateOrder'
 
 // SERVER SET UP

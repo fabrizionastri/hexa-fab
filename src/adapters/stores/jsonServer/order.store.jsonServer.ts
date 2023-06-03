@@ -1,6 +1,7 @@
 import axios, { AxiosResponse, Method } from 'axios'
-import { OrderGateway } from '../../../core/gateways/order.gateway'
+
 import { Order } from '../../../core/entities/order'
+import { OrderGateway1 } from '../../../core/gateways/order.gateway'
 
 const myAxios = axios.create({
   baseURL: 'http://localhost:3057/',
@@ -30,7 +31,7 @@ const $axios = {
   put: handleRequest('put'),
 }
 
-export const OrderStoreJsonServer: OrderGateway = {
+export const OrderStoreJsonServer1: OrderGateway1 = {
   getById: async (id: string): Promise<Order | undefined> => {
     return $axios.get<Order>(`/orders/${id}`)
   },
@@ -38,6 +39,14 @@ export const OrderStoreJsonServer: OrderGateway = {
     return $axios.get<Order[]>('/orders')
   },
   create: async (entity: Order): Promise<Order | undefined> => {
+    // if entity has an id but this id already exists in the Json Server, return undefined and log error
+    if (entity.id) {
+      const existingEntity = await $axios.get<Order>(`/orders/${entity.id}`)
+      if (existingEntity) {
+        console.error(`Entity with id ${entity.id} already exists`)
+        return undefined
+      }
+    }
     return await $axios.post<Order>('/orders', entity)
   },
   deleteById: async (id: string): Promise<Order | undefined> => {

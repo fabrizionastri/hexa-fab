@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-// import { fileURLToPath } from 'url' // use this to get path to current file path
 
+// import { fileURLToPath } from 'url' // use this to get path to current file path
 import { mockStore } from '../../mock/db'
 
 export const resetDb = () => {

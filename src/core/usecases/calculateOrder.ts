@@ -1,6 +1,6 @@
+import { OrderItemStore } from '../../adapters/stores/stores'
 import { Order } from '../entities/order'
 import { OrderItem } from '../entities/orderItem'
-import { OrderItemStore } from '../../adapters/stores/stores'
 import { calculateOrderItem } from './calculateOrderItem'
 import { getByProperty } from './getByProperty'
 
