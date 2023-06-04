@@ -4,9 +4,9 @@ import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
 import { OrderItem } from '../../../core/entities/orderItem'
 import { OrderItemGateway1 } from '../../../core/gateways/orderItem.gateway'
-import { GenericStoreInMemory } from './generic.store.inMemory'
+import { genericStoreInMemory1 } from './generic.store.inMemory'
 
-export const OrderItemStoreInMemory1: OrderItemGateway1 = (() => {
+export const orderItemStoreInMemory1: OrderItemGateway1 = (() => {
   const store: OrderItem[] = [...mockStore.orderItems]
   return {
     getById: async (id: string): Promise<OrderItem | undefined> => {
@@ -62,10 +62,10 @@ export const OrderItemStoreInMemory1: OrderItemGateway1 = (() => {
   }
 })()
 
-export const OrderItemStoreInMemory2: OrderItemGateway1 = (() => {
+export const orderItemStoreInMemory2: OrderItemGateway1 = (() => {
   const store: OrderItem[] = [...mockStore.orderItems]
   return {
-    ...GenericStoreInMemory<OrderItem>(mockStore.orderItems),
+    ...genericStoreInMemory1<OrderItem>(mockStore.orderItems),
     getByProperty: async (property: keyof OrderItem, value: any): Promise<OrderItem[] | undefined> => {
       return store.filter((entity: OrderItem) => entity[property] === value)
     },

@@ -1,8 +1,8 @@
 import { mockStore } from '../../../mock/db'
 import { Order } from '../../core/entities/order'
 import { resetDb } from '../../utils/resetDb'
-import { GenericStoreInMemory } from './inMemory/generic.store.inMemory'
-import { OrderStoreInMemory1, OrderStoreInMemory2 } from './inMemory/order.store.inMemory'
+import { genericStoreInMemory1 } from './inMemory/generic.store.inMemory'
+import { orderStoreInMemory1, orderStoreInMemory2 } from './inMemory/order.store.inMemory'
 import { OrderStoreJsonServer1 } from './jsonServer/order.store.jsonServer'
 
 const order4: Order = {
@@ -20,15 +20,15 @@ const orderX: Order = {
 }
 
 const orderStores = [
-  { storeName: 'OrderStoreInMemory1', orderStore: OrderStoreInMemory1 },
-  { storeName: 'OrderStoreInMemory2', orderStore: OrderStoreInMemory2 },
-  { storeName: 'GenericStoreInMemory(Order)', orderStore: GenericStoreInMemory<Order>(mockStore.orders) },
+  { storeName: 'OrderStoreInMemory1', orderStore: orderStoreInMemory1 },
+  { storeName: 'OrderStoreInMemory2', orderStore: orderStoreInMemory2 },
+  { storeName: 'GenericStoreInMemory(Order)', orderStore: genericStoreInMemory1<Order>(mockStore.orders) },
   { storeName: 'OrderStoreJsonServer1', orderStore: OrderStoreJsonServer1 },
 ]
 
 const orders: Order[] = mockStore.orders
 
-describe('OrderStore', () => {
+describe('orderStore', () => {
   orderStores.forEach(({ storeName, orderStore }) => {
     resetDb() // only required for JsonServer
 

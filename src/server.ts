@@ -3,7 +3,7 @@
 import express, { Express, Request, Response } from 'express'
 import expressEjsLayouts from 'express-ejs-layouts'
 
-import { OrderStore } from './adapters/stores/stores'
+import { orderStore } from './adapters/stores/stores'
 import { calculateOrder } from './core/usecases/calculateOrder'
 
 // SERVER SET UP
@@ -28,14 +28,14 @@ app.get('/', (_req: Request, res: Response) => {
 })
 
 app.get('/order', async (_req: Request, res: Response) => {
-  const orders = await OrderStore.getAll()
+  const orders = await orderStore.getAll()
   // res.send(JSON.stringify(orders))
   res.render('order-all', { orders })
 })
 
 app.get('/order/:id', async (req, res) => {
   const id = req.params.id
-  let order = await OrderStore.getById(id)
+  let order = await orderStore.getById(id)
   if (order) {
     order = await calculateOrder(order)
     res.render('order-detail', { order })

@@ -15,3 +15,27 @@ export interface OrderGateway2 extends GenericGateway<Order> {
   getByProperty: (property: keyof Order, value: any) => Promise<Order[] | undefined> // return undefined if server error
   getForAccount: (accountId: string) => Promise<Order[] | undefined> // return undefined if server error
 }
+
+export const OrderGateway3 = (orderStore: any | null | undefined, orderItemStore: any | null | undefined) => {
+  if (!orderStore) throw new Error('No order adapter provided')
+  if (!orderItemStore) throw new Error('No order items adapter provided')
+  const items = (orderId: string | null | undefined) => orderItemStore.getAll(orderId)
+  return {
+    getAll: (): Order[] => {
+      const orders = orderStore.getAll()
+      return orders.map((order: Partial<Order>) => {
+        return {
+          ...order,
+          orderItems: items(order.id),
+        }
+      })
+    },
+    getById: (orderId: string): Order => {
+      const order = orderStore.getById(orderId)
+      return {
+        ...order,
+        orderItems: items(order.id),
+      }
+    },
+  }
+}

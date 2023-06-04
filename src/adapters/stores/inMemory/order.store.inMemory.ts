@@ -3,11 +3,11 @@ import { nanoid } from 'nanoid'
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
 import { OrderGateway1, OrderGateway2 } from '../../../core/gateways/order.gateway'
-import { GenericStoreInMemory } from './generic.store.inMemory'
+import { genericStoreInMemory1 } from './generic.store.inMemory'
 
 // Both stores (1 and 2) work both with both gateways (1 and 2)
 
-export const OrderStoreInMemory1: OrderGateway1 = (() => {
+export const orderStoreInMemory1: OrderGateway1 = (() => {
   const store: Order[] = [...mockStore.orders]
   return {
     getById: async (id: string): Promise<Order | undefined> => {
@@ -68,11 +68,11 @@ export const OrderStoreInMemory1: OrderGateway1 = (() => {
   }
 })()
 
-export const OrderStoreInMemory2: OrderGateway2 = (() => {
+export const orderStoreInMemory2: OrderGateway2 = (() => {
   const store: Order[] = [...mockStore.orders]
 
   return {
-    ...GenericStoreInMemory<Order>(mockStore.orders),
+    ...genericStoreInMemory1<Order>(mockStore.orders),
     getByProperty: async (property: keyof Order, value: any): Promise<Order[] | undefined> => {
       return store.filter((entity: Order) => entity[property] === value)
     },

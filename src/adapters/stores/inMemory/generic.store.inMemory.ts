@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid'
 
 import { GenericGateway } from './../../../core/gateways/generic.gateway'
 
-export function GenericStoreInMemory<T extends { id: string }>(data: T[]): GenericGateway<T> {
+export function genericStoreInMemory1<T extends { id: string }>(data: T[]): GenericGateway<T> {
   const store: T[] = [...data]
 
   return {
@@ -56,7 +56,7 @@ export function GenericStoreInMemory<T extends { id: string }>(data: T[]): Gener
   }
 }
 
-export function GenericStoreInMemory2<T extends { id: string }>(data: T[]): GenericGateway<T> {
+export function genericStoreInMemory2<T extends { id: string }>(data: T[]): GenericGateway<T> {
   const store: T[] = [...data]
 
   return {

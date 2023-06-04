@@ -1,4 +1,4 @@
-import { OrderItemStore } from '../../adapters/stores/stores'
+import { orderItemStore } from '../../adapters/stores/stores'
 import { Order } from '../entities/order'
 import { OrderItem } from '../entities/orderItem'
 import { calculateOrderItem } from './calculateOrderItem'
@@ -17,7 +17,7 @@ export const taxAmount = (orderItems: OrderItem[]): number => {
 }
 
 export const calculateOrder = async (order: Order): Promise<Order> => {
-  let orderItems = await getByProperty<OrderItem>('orderId', order.id, OrderItemStore)
+  let orderItems = await getByProperty<OrderItem>('orderId', order.id, orderItemStore)
   // for each orderItem, calculateOrderItem and update the orderItem
   orderItems = orderItems.map((item) => calculateOrderItem(item))
 
