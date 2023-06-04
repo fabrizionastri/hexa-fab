@@ -2,8 +2,10 @@ import { nanoid } from 'nanoid'
 
 import { mockStore } from '../../../../mock/db'
 import { Order } from '../../../core/entities/order'
-import { OrderGateway1 } from '../../../core/gateways/order.gateway'
+import { OrderGateway1, OrderGateway2 } from '../../../core/gateways/order.gateway'
 import { GenericStoreInMemory } from './generic.store.inMemory'
+
+// Both stores (1 and 2) work both with both gateways (1 and 2)
 
 export const OrderStoreInMemory1: OrderGateway1 = (() => {
   const store: Order[] = [...mockStore.orders]
@@ -66,7 +68,7 @@ export const OrderStoreInMemory1: OrderGateway1 = (() => {
   }
 })()
 
-export const OrderStoreInMemory2: OrderGateway1 = (() => {
+export const OrderStoreInMemory2: OrderGateway2 = (() => {
   const store: Order[] = [...mockStore.orders]
 
   return {
