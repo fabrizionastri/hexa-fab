@@ -10,11 +10,11 @@ import { genericStoreInMemory1 } from './generic.store.inMemory'
 export const orderStoreInMemory1: OrderGateway1 = (() => {
   const store: Order[] = [...mockStore.orders]
   return {
-    getById: async (id: string): Promise<Order | undefined> => {
-      return store.find((entity: Order) => entity.id === id)
-    },
     getAll: async (): Promise<Order[] | undefined> => {
       return store
+    },
+    getById: async (id: string): Promise<Order | undefined> => {
+      return store.find((entity: Order) => entity.id === id)
     },
     create: async (entity: Order): Promise<Order | undefined> => {
       // if entity does not have an id, generate an id using nanoid and loop if needed until it is unique
@@ -84,3 +84,22 @@ export const orderStoreInMemory2: OrderGateway2 = (() => {
     },
   }
 })()
+// src/adapters/stores/inMemory/order.store.inMemory.ts
+export const orderStoreInMemory3 = () => {
+  const store: Order[] = [...mockStore.orders]
+  return {
+    getAll: () => store,
+    getById: (orderId: string) => store.find((order) => order.id === orderId),
+    getByAccountId: (accountId: string) =>
+      store.filter((order) => order.supplierId === accountId || order.clientId === accountId),
+  }
+}
+
+// this is a simplified version, based on 3
+export const orderStoreInMemory4 = () => {
+  const store: Order[] = [...mockStore.orders]
+  return {
+    getAll: () => store,
+    getById: (id: string) => store.find((item) => item.id === id),
+  }
+}

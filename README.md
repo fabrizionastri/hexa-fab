@@ -36,3 +36,7 @@ In this project, gateways are defined as interfaces.
 Another project explores the usage of functions of functions instead of interfaces, and can be found here:
 
 https://github.com/fabrizionastri/hexa-functional
+
+## Notes:
+
+- this repo is based on a clone of: `dmo-hexa-ts`

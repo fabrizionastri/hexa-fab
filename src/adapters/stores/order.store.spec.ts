@@ -26,7 +26,7 @@ const orderStores = [
   { storeName: 'OrderStoreJsonServer1', orderStore: OrderStoreJsonServer1 },
 ]
 
-const orders: Order[] = mockStore.orders
+const orders = mockStore.orders
 
 describe('orderStore', () => {
   orderStores.forEach(({ storeName, orderStore }) => {

@@ -8,7 +8,7 @@ export const mockStore: {
   orders: [
     {
       id: 'order0',
-      clientId: 'accountA',
+      clientId: 'accountX',
       supplierId: 'accountB',
     },
     {
@@ -19,8 +19,8 @@ export const mockStore: {
     },
     {
       id: 'order2',
-      clientId: 'accountA',
-      supplierId: 'accountC',
+      clientId: 'accountC',
+      supplierId: 'accountA',
       name: 'Chaussettes',
     },
     {

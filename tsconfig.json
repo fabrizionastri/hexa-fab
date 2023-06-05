@@ -14,20 +14,20 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "types": ["vitest/importMeta", "vitest/globals"]
-    // "baseUrl": "."
-    // "paths": {
-    //   "~/*": ["./*"],
-    //   "@/*": ["./src/*"],
-    //   "~/src/core/entities/*": ["./src/core/entities/*", "./src/core/entities"],
-    //   "usecases/*": ["./src/core/usecases/*", "./src/core/usecases"],
-    //   "gateways/*": ["./src/core/gateways/*", "./src/core/gateways"],
-    //   "adapters/*": ["./src/adapters/*", "./src/adapters"],
-    //   "utils/*": ["./src/utils/*", "./src/utils"],
-    //   "mock/*": ["./mock/*", "./mock"]
-    // }
+    "types": ["vitest/importMeta", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./src/*"],
+      "entities/*": ["./src/core/entities/*", "./src/core/entities"],
+      "usecases/*": ["./src/core/usecases/*", "./src/core/usecases"],
+      "gateways/*": ["./src/core/gateways/*", "./src/core/gateways"],
+      "adapters/*": ["./src/adapters/*", "./src/adapters"],
+      "utils/*": ["./src/utils/*", "./src/utils"],
+      "mock/*": ["./mock/*", "./mock"]
+    }
   },
-  // "include": ["src/**/*", "mock/**/*"],
+  "include": ["src/**/*", "mock/**/*"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
