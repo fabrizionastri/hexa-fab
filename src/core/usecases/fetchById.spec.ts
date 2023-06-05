@@ -1,9 +1,9 @@
 import { mockStore } from '~/mock/db'
-import { orderStoreInMemory3 } from '~/src/adapters/stores/inMemory/order.store.inMemory'
+import { orderStoreInMemory3 } from '~/src/adapters/stores/order.store'
 
 import { Order } from '../entities/order'
 import { orderGateway3 } from '../gateways/order.gateway'
-import { fetchOrderById } from './order3'
+import { fetchOrderById } from './fetchById'
 
 const orders: Order[] = [...mockStore.orders]
 
