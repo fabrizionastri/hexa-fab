@@ -1,21 +1,21 @@
 import { Order } from '../entities/order'
 
 export interface OrderGateway1 {
-  getAll: () => Promise<Order[] | undefined>
-  getById: (id: string) => Promise<Order | undefined>
+  getAll: () => Order[] | undefined
+  getById: (id: string) => Order | undefined
 }
 
-export const orderGateway3 = (orderStore: any) => {
+export const orderGateway2 = (orderDbAdapter: any) => {
   return {
-    getAll: (): Order[] => orderStore.getAll(),
-    getById: (orderId: string): Order => orderStore.getById(orderId),
+    getAll: (): Order[] => orderDbAdapter.getAll(),
+    getById: (orderId: string): Order => orderDbAdapter.getById(orderId),
   }
 }
 
-// this is equivalent to orderGateway3: different syntax but same usage and result
-export const orderGateway4 = (orderStore: any) => {
+// this is equivalent to orderGateway2: different syntax but same usage and result
+export const orderGateway4 = (orderDbAdapter: any) => {
   return {
-    getAll: orderStore.getAll,
-    getById: orderStore.getById,
+    getAll: orderDbAdapter.getAll,
+    getById: orderDbAdapter.getById,
   }
 }

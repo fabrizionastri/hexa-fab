@@ -1,6 +1,6 @@
 import { Order } from '../src/core/entities/order'
 
-export const mockStore: {
+export const inMemoryDb: {
   orders: Order[]
 } = {
   orders: [

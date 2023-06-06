@@ -1,24 +1,26 @@
-import { mockStore } from '~/mock/db'
-import { orderStoreInMemory3 } from '~/src/adapters/stores/order.store'
-
-import { Order } from '../entities/order'
-import { orderGateway3 } from '../gateways/order.gateway'
+import { orderDbAdapterInMemory1, orderDbAdapterInMemory2 } from 'src/adapters/dbAdapters/inMemory/order.dbAdapter'
+import { inMemoryDb } from 'mock/inMemoryDb'
 import { fetchOrderById } from './fetchById'
 
-const orders: Order[] = [...mockStore.orders]
+const orders = inMemoryDb.orders
 
-describe('Usecase: orderById', () => {
-  it('orderById should return the correct order', () => {
-    const gateway = orderGateway3(orderStoreInMemory3())
-    const useCase = fetchOrderById(gateway)
-    const result = useCase('order1')
-    expect(result).toEqual(orders[1])
-  })
+const orderDbAdapters = [
+  { dbName: 'OrderDbInMemory1', orderDbAdapter: orderDbAdapterInMemory1 },
+  { dbName: 'OrderDbInMemory2()', orderDbAdapter: orderDbAdapterInMemory2() },
+]
 
-  it('orderById should return undefined for a non-existent order', () => {
-    const gateway = orderGateway3(orderStoreInMemory3())
-    const useCase = fetchOrderById(gateway)
-    const result = useCase('nonExistentOrder')
-    expect(result).toBeUndefined()
+describe('Usecase: fetchOrderById  → for each orderDbAdapter', () => {
+  orderDbAdapters.forEach(({ dbName, orderDbAdapter }) => {
+    describe(dbName, () => {
+      it('shoud return an order for valid id', () => {
+        const result = fetchOrderById(orderDbAdapter)('order1')
+        expect(result).toEqual(orders[1])
+      })
+
+      it('should return undefined for inexistant id', () => {
+        const result = fetchOrderById(orderDbAdapter)('inexistant')
+        expect(result).toEqual(undefined)
+      })
+    })
   })
 })

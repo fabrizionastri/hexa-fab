@@ -1,36 +1,40 @@
-import { orderStoreInMemory3 } from '~/src/adapters/stores/order.store'
+import { Order } from 'entities/order'
+import { orderDbAdapterInMemory2 } from 'src/adapters/dbAdapters/inMemory/order.dbAdapter'
 
-import { mockStore } from '../../../mock/db'
-import { Order } from '../entities/order'
-import { orderGateway3, orderGateway4 } from './order.gateway'
+import { inMemoryDb } from '~/mock/inMemoryDb'
 
-const orders: Order[] = mockStore.orders
+import { orderGateway2, orderGateway4 } from './order.gateway'
+
+const orders: Order[] = inMemoryDb.orders
 
 // TESTS
-describe('orderGateway3 and orderStoreInMemory3', () => {
-  describe('orderGateway3 and orderStoreInMemory3', () => {
-    it('should return all orders from the store', () => {
-      const orderGateway = orderGateway3(orderStoreInMemory3())
+
+// Note : no need to test orderGateway1 because it is an interface, not a function
+
+describe('orderGateway2 and orderDbInMemory2', () => {
+  describe('orderGateway2 and orderDbInMemory2', () => {
+    it('should return all orders from the db', () => {
+      const orderGateway = orderGateway2(orderDbAdapterInMemory2())
       const result = orderGateway.getAll()
       return expect(result).toEqual(orders)
     })
 
-    it('should return the order with the specified ID from the store', () => {
-      const orderGateway = orderGateway3(orderStoreInMemory3())
+    it('should return the order with the specified ID from the db', () => {
+      const orderGateway = orderGateway2(orderDbAdapterInMemory2())
       const result = orderGateway.getById('order1')
       return expect(result).toEqual(orders[1])
     })
   })
 
-  describe('orderGateway4 and orderStoreInMemory4', () => {
-    it('should return all orders from the store', () => {
-      const orderGateway = orderGateway4(orderStoreInMemory3())
+  describe('orderGateway4 and orderDbInMemory4', () => {
+    it('should return all orders from the db', () => {
+      const orderGateway = orderGateway4(orderDbAdapterInMemory2())
       const result = orderGateway.getAll()
       return expect(result).toEqual(orders)
     })
 
-    it('should return the order with the specified ID from the store', () => {
-      const orderGateway = orderGateway4(orderStoreInMemory3())
+    it('should return the order with the specified ID from the db', () => {
+      const orderGateway = orderGateway4(orderDbAdapterInMemory2())
       const result = orderGateway.getById('order1')
       return expect(result).toEqual(orders[1])
     })

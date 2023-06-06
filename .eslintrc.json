@@ -7,8 +7,11 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "typescript",
-    "prettier"
+    "plugin:vue/vue3-recommended",
+    "plugin:prettier/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -27,6 +30,7 @@
     "semi": ["error", "never"],
     "@typescript-eslint/no-explicit-any": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "prettier/prettier": ["error", {}, { "usePrettierrc": true }]
   }
 }
